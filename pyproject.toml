@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "just_watch_crawler"
+version = "0.1.0"
+description = ""
+authors = ["brunobarros <1232097@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+JustWatch = "^0.5.1"
+pycountry = "^22.3.5"
+emoji-country-flag = "^1.3.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
