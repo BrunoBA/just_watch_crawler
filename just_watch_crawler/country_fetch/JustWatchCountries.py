@@ -114,7 +114,7 @@ class JustWatchCountries:
             "ve",
             "ae",
             "us",
-            "uk",
+            # "uk",
             "eg",
             "gq",
             "at"
