@@ -23,7 +23,7 @@ class CountryFetch:
     def cooldown(self):
         seconds = random.randint(self.MIN_TIMEOUT, self.MAX_TIMEOUT)
 
-        time.sleep(seconds/10)
+        time.sleep(0.1)
 
     def __get_list_of_providers_from_movies(self, movie):
         if 'offers' not in movie:
@@ -58,33 +58,31 @@ class CountryFetch:
         country_flag = flag.flag(country)
         try:
             obj_country = pycountry.countries.get(alpha_2=country)
-            return "{}  {}-{}".format(country_flag, country, obj_country.name)
+            return "{}  {}".format(country_flag, obj_country.name)
         except:
-            return "{} {}-{}".format('  ', country, country)
+            return "{} {}".format('  ', country, country)
 
     def get_countries_by(self, movie_id: int):
         countries = JustWatchCountries().get_available_countries()
         time = int((len(countries) * self.MAX_TIMEOUT)/60)
         print("The search will take {} min...".format(time))
 
-        bar = IncrementalBar('Searching...', max=len(countries), suffix='%(percent)d%% %(elapsed_td)ss %(avg).3ss/country ')
+        bar = IncrementalBar('Searching...', max=len(countries), suffix='%(percent).2d%% %(elapsed_td)ss %(avg).3ss/country ')
         countries_available = []
-        for index, country in enumerate(countries):
-            country = country.upper()
-        
+        for country in countries:
+            bar.next()
             try:
-                just_watch = JustWatch(country=country)
-                country_feeedback = self.country_feedback(country)
+                just_watch = JustWatch(country=country.upper())
+                country_feeedback = self.country_feedback(country.upper())
                 movie = just_watch.get_title(title_id=movie_id, content_type='movie')
 
                 providers = self.__get_list_of_providers_from_movies(movie)
                 if (self.search_by_providers(movie)):
                     countries_available.append("{} {}".format(country_feeedback, providers))
-                    print("{} {} {}".format(country_feeedback, movie['title'], providers))
+                    print("{} - {} {}".format(country_feeedback, movie['title'], providers))
             except:
                 pass
             self.cooldown()
-            bar.next()
         bar.finish()
             
         return countries_available
