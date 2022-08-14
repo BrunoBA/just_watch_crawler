@@ -4,12 +4,25 @@ from just_watch_crawler.model.Cast import Cast
 
 class Movie:
     def __init__(self, movie) -> None:
-        self.id = movie['id']
-        self.short_description = movie['short_description']
-        self.original_release_year = movie['original_release_year']
-        self.object_type = movie['object_type']
-        self.original_title = movie['original_title']
+        self.__initialize_properties(movie)
         self.__initialize_cast(movie)
+    
+    def get_id(self):
+        return self.id
+
+    def __initialize_properties(self, movie) -> None:
+        properties =['id',
+        'short_description',
+        'original_release_year',
+        'object_type',
+        'original_title']
+
+        for property in properties:
+            if property in movie:
+                setattr(self, property, movie[property])
+            else:
+                setattr(self, property, "")
+        
 
     def __initialize_cast(self, movie) -> None:
         self.cast = []
@@ -17,7 +30,7 @@ class Movie:
             return
         for index, credit in enumerate(movie['credits']):
             self.cast.append(Cast(credit))
-            if (index == 2):
+            if (index == 3):
                 return
 
     def __group_cast(self) -> str:
@@ -29,6 +42,8 @@ class Movie:
 
     def __str__(self) -> str:
         return """
+#{}
+
 {} ({})
 
 {}
@@ -36,6 +51,7 @@ class Movie:
 
 {}
         """.format(
+            self.id,
             self.original_title,
             self.original_release_year,
             self.short_description,            

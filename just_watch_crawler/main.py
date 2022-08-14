@@ -1,19 +1,22 @@
 from just_watch_crawler.country_fetch.CountryFetch import CountryFetch
-from just_watch_crawler.movie_search.MovieSearch import MovieSearch
-from just_watch_crawler.pages.Menu import Menu
+from just_watch_crawler.pages.MovieSelect import MovieSelect
+from just_watch_crawler.pages.feedbacks.MovieFound import MovieFound
+from just_watch_crawler.pages.feedbacks.MovieDidntFound import MovieDidntFound
 
-title = input("Please inform the movie name:\n")
-movie_search = MovieSearch()
-movies = movie_search.search_by_title(title)
+exit = False
+while not exit:
+    movie_select = MovieSelect()
+    movie = movie_select.choose_movie()
 
-menu = Menu(movies)
-movie_id = menu.select_movie()
+    if movie is not None:
+        movieSearch = CountryFetch()
+        countries_available = movieSearch.get_countries_by(movie.id)
 
-if (movie_id != 0):
-    movieSearch = CountryFetch()
-    countries_available = movieSearch.get_countries_by(movie_id)
-
-    print("The movie is available in: \n")
-    for country in countries_available:
-        print(country)
+        if len(countries_available) == 0:
+            MovieDidntFound(movie).feedback()
+        else:
+            MovieFound(movie, countries_available).feedback()
+            
+    else:
+        exit = True
 

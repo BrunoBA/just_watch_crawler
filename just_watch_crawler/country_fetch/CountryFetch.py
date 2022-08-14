@@ -1,5 +1,6 @@
 
 from just_watch_crawler.country_fetch.JustWatchCountries import JustWatchCountries
+from just_watch_crawler.providers.Globoplay import Globoplay
 from just_watch_crawler.providers.Netflix import Netflix
 from justwatch import JustWatch
 import time
@@ -13,7 +14,8 @@ class CountryFetch:
     MAX_TIMEOUT = 2
     def __init__(self) -> None:
         self.providers = [
-            Netflix()
+            Netflix(),
+            Globoplay()
         ]
 
     def cooldown(self):
@@ -78,7 +80,7 @@ class CountryFetch:
                 providers = self.__get_list_of_providers_from_movies(movie)
                 feedback = ""
                 if (self.search_by_providers(movie)):
-                    countries_available.append(country_feeedback)
+                    countries_available.append("{} {}".format(country_feeedback, providers))
                     feedback = "✅"
                 print(movie['title']+ " " + feedback + " " + providers)
             except:

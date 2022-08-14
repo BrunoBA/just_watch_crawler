@@ -1,12 +1,23 @@
-
+import pycountry
 
 class JustWatchCountries:
     def __init__(self) -> None:
         pass
 
+    def get_all_countries(self):
+        countries = []
+
+        for country in pycountry.countries:
+            countries.append(country.alpha_2)
+
+        countries.sort()
+        return countries
+
     def get_available_countries(self):
         coutries = [
             "dz",
+            "al",
+            "ad",
             "ar",
             "au",
             "bs",
