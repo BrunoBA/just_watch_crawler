@@ -1,5 +1,9 @@
 
 
+from just_watch_crawler.model.Movie import Movie
+from just_watch_crawler.movie_search.MovieSearch import MovieSearch
+
+
 class Menu:
     def __init__(self, movies) -> None:
         self.movies = movies
@@ -40,8 +44,23 @@ class Menu:
             self.__print_option(self.movies[title], title)
 
     def select_movie(self) -> int:
-       self.load_movies()
-       return self.ask_movie()
+        self.load_movies()
+        anwser = "no"
+        while anwser.lower() != "yes":
+            movie_id = self.ask_movie()
+            
+            if (movie_id == 0):
+                return movie_id
+
+            movie_search = MovieSearch()
+            movie = movie_search.search_by_id(movie_id)
+
+            print(Movie(movie))
+
+            anwser = input("Is this movie you're looking for? (yes/no)\n")
+            print(anwser)
+    
+        return movie_id
        
         
         

@@ -9,8 +9,8 @@ import flag
 
 
 class CountryFetch:
-    MIN_TIMEOUT = 2
-    MAX_TIMEOUT = 4
+    MIN_TIMEOUT = 1
+    MAX_TIMEOUT = 2
     def __init__(self) -> None:
         self.providers = [
             Netflix()

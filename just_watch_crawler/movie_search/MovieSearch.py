@@ -10,4 +10,12 @@ class MovieSearch:
             return possible_movies
         except:
             return []
+
+    def search_by_id(self, id: int):
+        try:
+            movie = self.just_watch.get_title(title_id=id, content_type='movie')
+
+            return movie
+        except:
+            return {}
         
