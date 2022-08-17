@@ -1,10 +1,10 @@
 
 from just_watch_crawler.country_fetch.JustWatchCountries import JustWatchCountries
+from just_watch_crawler.providers.DisneyPlus import DisneyPlus
 from just_watch_crawler.providers.Globoplay import Globoplay
 from just_watch_crawler.providers.Netflix import Netflix
 from justwatch import JustWatch
 import time
-import random
 import pycountry
 import flag
 from progress.bar import IncrementalBar
@@ -17,13 +17,12 @@ class CountryFetch:
     def __init__(self) -> None:
         self.providers = [
             Netflix(),
+            DisneyPlus(),
             Globoplay()
         ]
 
     def cooldown(self):
-        seconds = random.randint(self.MIN_TIMEOUT, self.MAX_TIMEOUT)
-
-        time.sleep(0.1)
+        time.sleep(0.125)
 
     def __get_list_of_providers_from_movies(self, movie):
         if 'offers' not in movie:
@@ -64,8 +63,6 @@ class CountryFetch:
 
     def get_countries_by(self, movie_id: int):
         countries = JustWatchCountries().get_available_countries()
-        time = int((len(countries) * self.MAX_TIMEOUT)/60)
-        print("The search will take {} min...".format(time))
 
         bar = IncrementalBar('Searching...', max=len(countries), suffix='%(percent).2d%% %(elapsed_td)ss %(avg).3ss/country ')
         countries_available = []
